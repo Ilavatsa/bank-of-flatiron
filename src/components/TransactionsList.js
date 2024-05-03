@@ -1,8 +1,13 @@
 import React from "react";
 import Transaction from "./Transaction";
 
-function TransactionsList({transactions,handleDelete }) {
-  
+
+function TransactionsList({ transactions, handleDelete }) {
+  // Handle the case where transactions might be null or undefined
+  if (!transactions) {
+    return <p>No transactions available.</p>;
+  }
+
   return (
     <table className="ui celled striped padded table">
       <tbody>
@@ -23,12 +28,17 @@ function TransactionsList({transactions,handleDelete }) {
             <h3 className="ui center aligned header">Remove</h3>
           </th>
         </tr>
-        {
-          transactions.map((singletransaction)=>{
-            return <Transaction date={singletransaction.date}  description={singletransaction.description} amount={singletransaction.amount} category={singletransaction.category} id={singletransaction.id} key={singletransaction.id}  onDeleteKey={handleDelete}></Transaction>
-          })
-        }
-        
+        {transactions.map((singleTransaction) => (
+          <Transaction
+            key={singleTransaction.id}
+            date={singleTransaction.date}
+            description={singleTransaction.description}
+            category={singleTransaction.category}
+            amount={singleTransaction.amount}
+            id={singleTransaction.id}
+            onDelete={() => handleDelete(singleTransaction.id)}
+          />
+        ))}
       </tbody>
     </table>
   );
